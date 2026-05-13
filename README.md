@@ -193,3 +193,4 @@ The project includes unit tests to check the correctness of calculations and log
 ## Conclusion
 
 This project demonstrates Python fundamentals, modular architecture, object-oriented programming, database integration, testing, and teamwork. It is designed as a realistic calculator system that saves operation history and allows the user to manage previous calculations efficiently.
+Hi bitch
