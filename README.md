@@ -23,7 +23,7 @@ The purpose of this project is to create a practical calculator application that
 - GitHub
 
 ## Project Structure
-
+```text
 FinalProject/
 |
 |
