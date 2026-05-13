@@ -69,8 +69,8 @@ FinalProject/
 ```
 
 ## UML-Based Design
-###Main Classes
-####CalculatorApp
+### Main Classes
+#### CalculatorApp
 
 Responsible for running the program and controlling the menu flow.
 
@@ -80,7 +80,7 @@ start the application
 display the main menu
 process user choices
 connect all modules together
-####Calculator
+#### Calculator
 
 Responsible for performing mathematical calculations.
 
@@ -90,7 +90,7 @@ add(a, b)
 subtract(a, b)
 multiply(a, b)
 divide(a, b)
-#####Operation
+#### Operation
 
 Represents one completed mathematical operation.
 
@@ -103,7 +103,7 @@ result
 
 This class stores one calculation as an object.
 
-#####HistoryManager
+#### HistoryManager
 
 Responsible for managing operation history.
 
@@ -113,7 +113,7 @@ add operation to history
 show saved history
 clear history
 work with database manager
-####DatabaseManager
+#### DatabaseManager
 
 Responsible for PostgreSQL connection and database queries.
 
@@ -125,7 +125,7 @@ fetch saved operations
 clear saved operations
 
 
-##OOP Principles Used
+## OOP Principles Used
 
 The project demonstrates the following OOP concepts required for the course:
 
@@ -135,7 +135,7 @@ Abstraction – methods hide internal calculation and database logic
 Inheritance – can be extended later through advanced operation classes
 Polymorphism – different operation types can be implemented in different ways
 
-##Data Management
+## Data Management
 
 The application stores operation history in a PostgreSQL database. This makes data storage more reliable and structured than a simple text file. Each operation is saved as a database record.
 
@@ -149,7 +149,7 @@ operations
 - result
 - created_at
 
-##Functions and Functional Programming
+## Functions and Functional Programming
 
 The project also includes modular functions and can use:
 
@@ -160,7 +160,7 @@ filter()
 
 These elements support the functional programming part of the project requirements.
 
-##Additional Python Features
+## Additional Python Features
 
 To satisfy the project requirements, the system will also include:
 
@@ -169,11 +169,11 @@ custom decorator for logging actions
 iterator or generator for viewing operation history step by step
 unit tests using unittest
 
-##Team Contributions
+## Team Contributions
 Bekzat Amanbek: Calculator logic, Operation model and OOP structure, User interface and menu system
 Batyrkhan Uvayev: DatabaseManager and PostgreSQL integration, Testing, debugging, and integration
 
-##Installation
+## Installation
 Clone the repository.
 
 Install dependencies:
@@ -186,10 +186,10 @@ Run the program:
 
 ```python main.py```
 
-##Testing
+## Testing
 
 The project includes unit tests to check the correctness of calculations and logic. The goal is to achieve a stable and bug-free runtime with passing tests, as required by the project criteria.
 
-##Conclusion
+## Conclusion
 
 This project demonstrates Python fundamentals, modular architecture, object-oriented programming, database integration, testing, and teamwork. It is designed as a realistic calculator system that saves operation history and allows the user to manage previous calculations efficiently.
