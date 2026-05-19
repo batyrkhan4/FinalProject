@@ -1,7 +1,9 @@
 import tkinter as tk
-from math import *
-from functions import *
-from history import *
+
+from math import pi, e, log
+from core.functions import *
+from storage.history import *
+
 def handle_click(app, value):
     current = app.display.get()
     try:

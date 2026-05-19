@@ -1,8 +1,10 @@
-from theme import *
-from settings import *
-from ui import *
-from actions import *
-from data import *
+import tkinter as tk
+
+from ui.theme import DARK, LIGHT, BLUE
+from ui.components import create_header, create_display, create_buttons
+from core.actions import handle_click
+from core.data import STANDARD, SCIENTIFIC, SCIENTIFIC_SECOND
+
 class Calculator:
 
     def __init__(self,root):
@@ -10,19 +12,15 @@ class Calculator:
         self.root=root
         self.mode="standard"
         self.second_mode=False
+        self.saved_value=None
+        self.waiting_log =False
 
         self.theme=DARK
 
         root.title("Calculator")
         root.geometry("430x760")
-        root.configure(
-            bg=self.theme["bg"]
-        )
-
-        root.resizable(
-            False,
-            False
-        )
+        root.configure(bg=self.theme["bg"])
+        root.resizable(False,False)
 
         create_header(self)
         create_display(self)
