@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from math import pi, e, log
-from core.functions import *
+from core.functions import square, cube, inverse, square_root, cube_root, absolute, ten_power, two_power, natural_log, common_log, exponent, factorial_num, sine, cosine, tangent, cotangent
 from storage.history import *
 
 def handle_click(app, value):
