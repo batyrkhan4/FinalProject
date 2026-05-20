@@ -43,7 +43,7 @@ class TestCalculatorFunctions(unittest.TestCase):
 
     def test_two_power(self):
         self.assertEqual(two_power(3), 8)
-        
+
     def test_natural_log(self):
             self.assertAlmostEqual(natural_log(1), 0)
 
@@ -67,5 +67,17 @@ class TestCalculatorFunctions(unittest.TestCase):
         self.assertTrue(is_valid_number("25"))
         self.assertTrue(is_valid_number("-3.5"))
         self.assertFalse(is_valid_number("abc"))
+
+    
+    def test_binary_operation(self):
+        operation = BinaryOperation("2+2", 4)
+        self.assertEqual(operation.get_expression(), "2+2")
+        self.assertEqual(operation.get_result(), 4)
+
+
+    def test_scientific_operation(self):
+        operation = ScientificOperation("sin", 90, 1)
+        self.assertEqual(operation.get_expression(), "sin(90)")
+        self.assertEqual(operation.get_result(), 1)
 if __name__ == "__main__":
     unittest.main()

@@ -4,7 +4,8 @@ from math import pi, e, log
 from core.functions import square, cube, inverse, square_root, cube_root, absolute, ten_power, two_power, natural_log, common_log, exponent, factorial_num, sine, cosine, tangent, cotangent
 from storage.history import add_to_history
 from core.decorators import log_action
-
+from models.operation import BinaryOperation, ScientificOperation
+from storage.history import add_operation_object
 @log_action
 def handle_click(app, value):
     current = app.display.get()
@@ -112,7 +113,8 @@ def handle_click(app, value):
                     )
                 )
 
-            add_to_history(expression, result)
+            operation = BinaryOperation(expression, result)
+            add_operation_object(operation)
 
             app.display.delete(0, tk.END)
             app.display.insert(0, result)
@@ -180,7 +182,8 @@ def handle_click(app, value):
 
             return
 
-        add_to_history(f"{value}({current})", result)
+        operation = BinaryOperation(expression, result)
+        add_operation_object(operation)
         app.display.delete(
             0,
             tk.END

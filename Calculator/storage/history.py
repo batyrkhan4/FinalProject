@@ -1,9 +1,13 @@
 from storage.database import save_operation, get_history, clear_history, delete_operation
 
-
 def add_to_history(expression, result):
     save_operation(expression, result)
 
+def add_operation_object(operation):
+    save_operation(
+        operation.get_expression(),
+        operation.get_result()
+    )
 
 def load_history():
     return get_history()
