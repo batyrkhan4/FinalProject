@@ -43,6 +43,15 @@ class TestCalculatorFunctions(unittest.TestCase):
 
     def test_two_power(self):
         self.assertEqual(two_power(3), 8)
+        
+    def test_natural_log(self):
+            self.assertAlmostEqual(natural_log(1), 0)
+
+    def test_common_log(self):
+        self.assertEqual(common_log(100), 2)
+
+    def test_exponent(self):
+        self.assertAlmostEqual(exponent(1), 2.718281828459045)
 
     def test_factorial_num(self):
         self.assertEqual(factorial_num(5), 120)
