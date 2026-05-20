@@ -1,14 +1,13 @@
-from storage.database import save, load, clear
+from storage.database import save_operation, get_history, clear_history
 
-def add_history(expression,result):
-    save(expression,result)
 
-def get_history():
-    return load()
+def add_to_history(expression, result):
+    save_operation(expression, result)
 
-def clear_history():
-    clear()
 
-def history_generator(records):
-    for record in records:
-        yield record
+def load_history():
+    return get_history()
+
+
+def delete_history():
+    clear_history()
