@@ -1,4 +1,5 @@
 import unittest
+from core.validators import is_valid_number
 from core.functions import (
     square,
     cube,
@@ -53,5 +54,9 @@ class TestCalculatorFunctions(unittest.TestCase):
         self.assertAlmostEqual(cosine(0), 1)
 
 
+    def test_valid_number(self):
+        self.assertTrue(is_valid_number("25"))
+        self.assertTrue(is_valid_number("-3.5"))
+        self.assertFalse(is_valid_number("abc"))
 if __name__ == "__main__":
     unittest.main()
