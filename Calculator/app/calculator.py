@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from storage.history import load_history, delete_one_history, history_generator
+from storage.history import load_history, delete_history, delete_one_operation, history_generator
 from ui.theme import DARK, LIGHT, BLUE
 from ui.components import create_header, create_display, create_buttons
 from core.actions import handle_click
@@ -134,7 +134,7 @@ class Calculator:
     def open_history(self):
         history_window = tk.Toplevel(self.root)
         history_window.title("Calculation History")
-        history_window.geometry("550x500")
+        history_window.geometry("600x550")
         history_window.configure(bg=self.theme["bg"])
 
         title = tk.Label(
@@ -151,7 +151,8 @@ class Calculator:
             font=("Segoe UI", 12),
             bg=self.theme["bg"],
             fg=self.theme["text"],
-            wrap="word"
+            wrap="word",
+            height=15
         )
         history_box.pack(fill="both", expand=True, padx=15, pady=10)
 
@@ -172,14 +173,14 @@ class Calculator:
 
         refresh_history()
 
-        input_frame = tk.Frame(
+        bottom_frame = tk.Frame(
             history_window,
             bg=self.theme["bg"]
         )
-        input_frame.pack(pady=5)
+        bottom_frame.pack(fill="x", padx=15, pady=10)
 
         id_label = tk.Label(
-            input_frame,
+            bottom_frame,
             text="Operation ID:",
             font=("Segoe UI", 11),
             bg=self.theme["bg"],
@@ -188,7 +189,7 @@ class Calculator:
         id_label.pack(side="left", padx=5)
 
         id_entry = tk.Entry(
-            input_frame,
+            bottom_frame,
             font=("Segoe UI", 11),
             width=10
         )
@@ -207,25 +208,25 @@ class Calculator:
             refresh_history()
 
         delete_button = tk.Button(
-            history_window,
+            bottom_frame,
             text="Delete Operation",
-            font=("Segoe UI", 12),
+            font=("Segoe UI", 11),
             bg="#f0ad4e",
             fg="white",
             command=delete_selected_operation
         )
-        delete_button.pack(pady=5)
+        delete_button.pack(side="left", padx=5)
 
         def clear_history_window():
             delete_history()
             refresh_history()
 
         clear_button = tk.Button(
-            history_window,
+            bottom_frame,
             text="Clear All History",
-            font=("Segoe UI", 12),
+            font=("Segoe UI", 11),
             bg="#d9534f",
             fg="white",
             command=clear_history_window
         )
-        clear_button.pack(pady=10)
+        clear_button.pack(side="left", padx=5)
