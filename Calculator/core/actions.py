@@ -2,7 +2,7 @@ import tkinter as tk
 
 from math import pi, e, log
 from core.functions import square, cube, inverse, square_root, cube_root, absolute, ten_power, two_power, natural_log, common_log, exponent, factorial_num, sine, cosine, tangent, cotangent
-from storage.history import *
+from storage.history import add_history
 from core.decorators import log_action
 
 @log_action
@@ -95,43 +95,29 @@ def handle_click(app, value):
 
         if value == "=":
 
+            expression = current
+
             if app.waiting_log:
-
                 base = float(current)
-
-                result = str(
-                    log(
-                        app.saved_value,
-                        base
-                    )
-                )
-
+                result = str(log(app.saved_value, base))
+                expression = f"log base {base} of {app.saved_value}"
                 app.waiting_log = False
 
             else:
-
                 result = str(
-
                     eval(
                         current
-                        .replace("×","*")
-                        .replace("÷","/")
+                        .replace("×", "*")
+                        .replace("÷", "/")
                     )
-
                 )
 
-            app.display.delete(
-                0,
-                tk.END
-            )
+            add_history(expression, result)
 
-            app.display.insert(
-                0,
-                result
-            )
+            app.display.delete(0, tk.END)
+            app.display.insert(0, result)
 
             return
-
 
         # ---------- FUNCTIONS ----------
 
@@ -194,7 +180,7 @@ def handle_click(app, value):
 
             return
 
-
+        add_history(f"{value}({current})", result)
         app.display.delete(
             0,
             tk.END
