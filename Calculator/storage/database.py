@@ -62,11 +62,14 @@ def get_history():
     return records
 
 
-def clear_history():
+def delete_operation(operation_id):
     connection = get_connection()
     cursor = connection.cursor()
 
-    cursor.execute("DELETE FROM operations")
+    cursor.execute(
+        "DELETE FROM operations WHERE id = %s",
+        (operation_id,)
+    )
 
     connection.commit()
     cursor.close()

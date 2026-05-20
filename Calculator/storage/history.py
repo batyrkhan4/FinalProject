@@ -1,4 +1,4 @@
-from storage.database import save_operation, get_history, clear_history
+from storage.database import save_operation, get_history, clear_history, delete_operation
 
 
 def add_to_history(expression, result):
@@ -11,7 +11,10 @@ def load_history():
 
 def delete_history():
     clear_history()
-    
+
 def history_generator(records):
     for record in records:
         yield record
+
+def delete_one_operation(operation_id):
+    delete_operation(operation_id)

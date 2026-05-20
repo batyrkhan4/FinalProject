@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from storage.history import load_history, delete_history, history_generator
+from storage.history import load_history, delete_one_history, history_generator
 from ui.theme import DARK, LIGHT, BLUE
 from ui.components import create_header, create_display, create_buttons
 from core.actions import handle_click
@@ -132,10 +132,9 @@ class Calculator:
         create_buttons(self)
 
     def open_history(self):
-
         history_window = tk.Toplevel(self.root)
         history_window.title("Calculation History")
-        history_window.geometry("500x400")
+        history_window.geometry("550x500")
         history_window.configure(bg=self.theme["bg"])
 
         title = tk.Label(
@@ -156,26 +155,74 @@ class Calculator:
         )
         history_box.pack(fill="both", expand=True, padx=15, pady=10)
 
-        records = load_history()
+        def refresh_history():
+            history_box.delete("1.0", "end")
 
-        if not records:
-            history_box.insert("end", "No saved operations yet.")
-        else:
-            for record in history_generator(records):
-                operation_id, expression, result, created_at = record
-                history_box.insert(
-                    "end",
-                    f"{operation_id}. {expression} = {result} | {created_at}\n"
-                )
+            records = load_history()
+
+            if not records:
+                history_box.insert("end", "No saved operations yet.")
+            else:
+                for record in history_generator(records):
+                    operation_id, expression, result, created_at = record
+                    history_box.insert(
+                        "end",
+                        f"{operation_id}. {expression} = {result} | {created_at}\n"
+                    )
+
+        refresh_history()
+
+        input_frame = tk.Frame(
+            history_window,
+            bg=self.theme["bg"]
+        )
+        input_frame.pack(pady=5)
+
+        id_label = tk.Label(
+            input_frame,
+            text="Operation ID:",
+            font=("Segoe UI", 11),
+            bg=self.theme["bg"],
+            fg=self.theme["text"]
+        )
+        id_label.pack(side="left", padx=5)
+
+        id_entry = tk.Entry(
+            input_frame,
+            font=("Segoe UI", 11),
+            width=10
+        )
+        id_entry.pack(side="left", padx=5)
+
+        def delete_selected_operation():
+            operation_id = id_entry.get()
+
+            if not operation_id.isdigit():
+                history_box.delete("1.0", "end")
+                history_box.insert("end", "Please enter a valid operation ID.")
+                return
+
+            delete_one_operation(int(operation_id))
+            id_entry.delete(0, "end")
+            refresh_history()
+
+        delete_button = tk.Button(
+            history_window,
+            text="Delete Operation",
+            font=("Segoe UI", 12),
+            bg="#f0ad4e",
+            fg="white",
+            command=delete_selected_operation
+        )
+        delete_button.pack(pady=5)
 
         def clear_history_window():
             delete_history()
-            history_box.delete("1.0", "end")
-            history_box.insert("end", "History cleared successfully.")
+            refresh_history()
 
         clear_button = tk.Button(
             history_window,
-            text="Clear History",
+            text="Clear All History",
             font=("Segoe UI", 12),
             bg="#d9534f",
             fg="white",
