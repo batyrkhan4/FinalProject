@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from storage.history import load_history, clear_all_history, history_generator
+from storage.history import load_history, delete_history, history_generator
 from ui.theme import DARK, LIGHT, BLUE
 from ui.components import create_header, create_display, create_buttons
 from core.actions import handle_click
@@ -94,8 +94,6 @@ class Calculator:
 
         self.load_buttons()
 
-    def open_history(self):
-        print("history")
 
     def open_settings(self):
 
@@ -152,7 +150,7 @@ class Calculator:
         history_box = tk.Text(
             history_window,
             font=("Segoe UI", 12),
-            bg=self.theme["display_bg"] if "display_bg" in self.theme else self.theme["bg"],
+            bg=self.theme["bg"],
             fg=self.theme["text"],
             wrap="word"
         )
@@ -168,10 +166,10 @@ class Calculator:
                 history_box.insert(
                     "end",
                     f"{operation_id}. {expression} = {result} | {created_at}\n"
-            )
+                )
 
-        def clear_history():
-            clear_all_history()
+        def clear_history_window():
+            delete_history()
             history_box.delete("1.0", "end")
             history_box.insert("end", "History cleared successfully.")
 
@@ -181,7 +179,6 @@ class Calculator:
             font=("Segoe UI", 12),
             bg="#d9534f",
             fg="white",
-            command=clear_history
+            command=clear_history_window
         )
         clear_button.pack(pady=10)
-    
