@@ -182,7 +182,7 @@ def handle_click(app, value):
 
             return
 
-        operation = BinaryOperation(expression, result)
+        operation = ScientificOperation(value, current, result)
         add_operation_object(operation)
         app.display.delete(
             0,
