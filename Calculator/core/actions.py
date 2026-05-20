@@ -2,7 +2,7 @@ import tkinter as tk
 
 from math import pi, e, log
 from core.functions import square, cube, inverse, square_root, cube_root, absolute, ten_power, two_power, natural_log, common_log, exponent, factorial_num, sine, cosine, tangent, cotangent
-from storage.history import add_history
+from storage.history import add_to_history
 from core.decorators import log_action
 
 @log_action
@@ -112,7 +112,7 @@ def handle_click(app, value):
                     )
                 )
 
-            add_history(expression, result)
+            add_to_history(expression, result)
 
             app.display.delete(0, tk.END)
             app.display.insert(0, result)
@@ -180,7 +180,7 @@ def handle_click(app, value):
 
             return
 
-        add_history(f"{value}({current})", result)
+        add_to_history(f"{value}({current})", result)
         app.display.delete(
             0,
             tk.END
