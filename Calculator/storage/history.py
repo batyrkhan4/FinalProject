@@ -11,3 +11,7 @@ def load_history():
 
 def delete_history():
     clear_history()
+    
+def history_generator(records):
+    for record in records:
+        yield record

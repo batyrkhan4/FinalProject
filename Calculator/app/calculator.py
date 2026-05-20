@@ -1,5 +1,6 @@
 import tkinter as tk
 
+from storage.history import load_history, clear_all_history, history_generator
 from ui.theme import DARK, LIGHT, BLUE
 from ui.components import create_header, create_display, create_buttons
 from core.actions import handle_click
@@ -131,3 +132,56 @@ class Calculator:
         create_header(self)
         create_display(self)
         create_buttons(self)
+
+    def open_history(self):
+
+        history_window = tk.Toplevel(self.root)
+        history_window.title("Calculation History")
+        history_window.geometry("500x400")
+        history_window.configure(bg=self.theme["bg"])
+
+        title = tk.Label(
+            history_window,
+            text="Calculation History",
+            font=("Segoe UI", 18, "bold"),
+            bg=self.theme["bg"],
+            fg=self.theme["text"]
+        )
+        title.pack(pady=10)
+
+        history_box = tk.Text(
+            history_window,
+            font=("Segoe UI", 12),
+            bg=self.theme["display_bg"] if "display_bg" in self.theme else self.theme["bg"],
+            fg=self.theme["text"],
+            wrap="word"
+        )
+        history_box.pack(fill="both", expand=True, padx=15, pady=10)
+
+        records = load_history()
+
+        if not records:
+            history_box.insert("end", "No saved operations yet.")
+        else:
+            for record in history_generator(records):
+                operation_id, expression, result, created_at = record
+                history_box.insert(
+                    "end",
+                    f"{operation_id}. {expression} = {result} | {created_at}\n"
+            )
+
+        def clear_history():
+            clear_all_history()
+            history_box.delete("1.0", "end")
+            history_box.insert("end", "History cleared successfully.")
+
+        clear_button = tk.Button(
+            history_window,
+            text="Clear History",
+            font=("Segoe UI", 12),
+            bg="#d9534f",
+            fg="white",
+            command=clear_history
+        )
+        clear_button.pack(pady=10)
+    
