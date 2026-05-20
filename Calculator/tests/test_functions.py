@@ -1,6 +1,6 @@
 import unittest
 from core.validators import is_valid_number
-from core.functions import BinaryOperation, ScientificOperation
+from models.operation import BinaryOperation, ScientificOperation
 from core.functions import (
     square,
     cube,
