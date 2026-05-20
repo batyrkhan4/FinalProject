@@ -8,3 +8,7 @@ def get_history():
 
 def clear_history():
     clear()
+
+def history_generator(records):
+    for record in records:
+        yield record
