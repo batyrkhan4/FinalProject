@@ -62,8 +62,6 @@ def handle_click(app, value):
             return
 
 
-        # ---------- LOG BASE ----------
-
         if value == "logᵧx":
 
             if current:
@@ -80,8 +78,6 @@ def handle_click(app, value):
             return
 
 
-        # ---------- POWER ----------
-
         if value == "xʸ":
 
             app.display.insert(
@@ -91,8 +87,6 @@ def handle_click(app, value):
 
             return
 
-
-        # ---------- EQUAL ----------
 
         if value == "=":
 
@@ -121,7 +115,6 @@ def handle_click(app, value):
 
             return
 
-        # ---------- FUNCTIONS ----------
 
         if value == "x²":
             result = square(float(current))
@@ -173,7 +166,6 @@ def handle_click(app, value):
 
         else:
 
-            # обычные цифры и символы
 
             app.display.insert(
                 tk.END,
