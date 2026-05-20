@@ -4,107 +4,136 @@ Final project for **Introduction to Programming 2 (Python)**.
 
 ## Project Title
 
-**Advanced Calculator System with Operation History**
+**Advanced Calculator System with PostgreSQL Operation History**
 
 ## Project Description
 
-This project is a Python calculator application with a graphical user interface built with **Tkinter**. The calculator supports both standard and scientific modes. It can perform basic arithmetic operations and advanced mathematical functions such as square root, powers, trigonometric functions, logarithms, factorial, and constants like π and e.
+This project is a Python calculator application with a graphical user interface built with **Tkinter**. The calculator supports standard and scientific modes. It can perform arithmetic operations, scientific mathematical functions, change visual themes, save operation history in **PostgreSQL**, show saved history in a separate window, and clear saved history.
 
-The project follows a modular structure. The code is divided into several Python files, where each file has its own responsibility. This helps make the project easier to understand, test, and improve.
+The project follows a modular architecture. The code is divided into packages and modules such as `app`, `core`, `storage`, `ui`, and `tests`. This structure makes the project easier to understand, test, maintain, and improve.
 
 ## Project Purpose
 
-The purpose of this project is to create a realistic calculator system that demonstrates Python fundamentals, object-oriented programming, modular architecture, GUI programming, and data management.
+The purpose of this project is to demonstrate the main topics from Introduction to Programming 2:
 
-The project is more advanced than a basic calculator because it includes:
+- Python fundamentals
+- control flow and loops
+- functions
+- object-oriented programming
+- modular architecture
+- GUI programming
+- PostgreSQL data persistence
+- decorators
+- generators
+- regular expressions
+- unit testing
+- GitHub collaboration
 
-- standard calculator mode
-- scientific calculator mode
-- theme settings
-- operation handling
-- history module
-- database module for future saving of operations
-- separate files for UI, logic, settings, and data
+The project is more advanced than a basic calculator because it saves operation history and separates application logic into clear modules.
 
 ## Main Features
 
 - graphical user interface using Tkinter
 - standard calculator mode
 - scientific calculator mode
-- second scientific mode with extra functions
+- second scientific mode with additional functions
 - basic operations: addition, subtraction, multiplication, division
 - advanced functions: square, cube, square root, cube root, factorial
 - trigonometric functions: sin, cos, tan, cot
-- logarithmic functions: ln, log, custom base logarithm
+- logarithmic functions: ln, common log, custom base logarithm
 - constants: π and e
 - power functions: x², x³, xʸ, 10ˣ, 2ˣ, eˣ
 - theme changing: Dark, Light, and Blue
-- separate history and database modules
-- modular project organization
+- PostgreSQL operation history
+- history window for saved operations
+- clear history button
+- custom decorator for action logging
+- generator for processing history records
+- regex validation for number input
+- 15 unit tests using unittest
 
 ## Technologies Used
 
-- Python
+- Python 3
 - Tkinter
-- Math module
-- GitHub
 - PostgreSQL
+- psycopg2-binary
+- unittest
+- re module
+- math module
+- Git and GitHub
 
 ## How the Application Works
 
-1. The user starts the application from `main.py`.
-2. The program opens a Tkinter calculator window.
-3. The user can use standard calculator buttons.
-4. The user can switch between standard and scientific modes using the menu button.
-5. The user can use scientific functions such as `sin`, `cos`, `tan`, `ln`, `x²`, `x³`, and others.
-6. The user can change the theme using the settings button.
-7. The history button is prepared for viewing saved calculations.
-8. The database module is prepared for storing and loading operation history.
+1. The user starts the application from `Calculator/main.py`.
+2. The program calls `create_table()` and prepares the PostgreSQL table if it does not exist.
+3. A Tkinter calculator window opens.
+4. The user can use standard calculator buttons.
+5. The user can switch between standard and scientific modes using the menu button.
+6. The user can use scientific functions such as `sin`, `cos`, `tan`, `ln`, `x²`, `x³`, and others.
+7. When the user presses `=`, the result is calculated and saved to PostgreSQL.
+8. The user can open the history window using the history button.
+9. The history window displays saved operations from the database.
+10. The user can clear all saved history.
+11. Unit tests can be run from the terminal to check the correctness of the logic.
 
 ## Project Structure
 
 ```text
-Calculator/
-├── main.py
-├── requirements.txt
+FinalProject/
 ├── README.md
-├── app/
-│   └── calculator.py
-├── core/
-│   ├── actions.py
-│   ├── data.py
-│   └── functions.py
-├── storage/
-│   ├── database.py
-│   └── history.py
-└── ui/
-    ├── components.py
-    ├── settings.py
-    └── theme.py
+├── requirements.txt
+├── .gitignore
+└── Calculator/
+    ├── main.py
+    ├── test_db.py
+    ├── app/
+    │   ├── __init__.py
+    │   └── calculator.py
+    ├── core/
+    │   ├── __init__.py
+    │   ├── actions.py
+    │   ├── data.py
+    │   ├── decorators.py
+    │   ├── functions.py
+    │   └── validators.py
+    ├── storage/
+    │   ├── __init__.py
+    │   ├── database.py
+    │   └── history.py
+    ├── ui/
+    │   ├── __init__.py
+    │   ├── components.py
+    │   ├── settings.py
+    │   └── theme.py
+    └── tests/
+        ├── __init__.py
+        └── test_functions.py
 ```
 
 ## File Descriptions
 
 ### `Calculator/main.py`
 
-This is the entry point of the program. It creates the main Tkinter window, creates the `Calculator` object, and starts the application loop.
+Entry point of the program. It creates the PostgreSQL table, creates the main Tkinter window, creates the `Calculator` object, and starts the application loop.
 
-### `Calculator/calculator.py`
+### `Calculator/app/calculator.py`
 
-This file contains the main `Calculator` class. It controls the calculator window, calculator mode, theme, buttons, settings window, and main user actions.
+Contains the main `Calculator` class. This class controls the application window, current mode, current theme, button loading, settings window, history window, and communication between UI and logic.
 
 Main responsibilities:
 
-- create the calculator application
-- control standard and scientific modes
+- initialize the calculator window
+- switch between standard and scientific modes
 - load calculator buttons
-- open settings
+- open settings window
 - change themes
-- connect UI with button actions
+- open history window
+- connect button clicks with `core/actions.py`
 
-### `Calculator/actions.py`
+### `Calculator/core/actions.py`
 
-This file handles button clicks. It receives the selected button value and decides what action should happen.
+Handles calculator button clicks. It receives a button value and decides what action should happen.
 
 Main responsibilities:
 
@@ -113,12 +142,36 @@ Main responsibilities:
 - delete one character
 - calculate expressions
 - handle scientific functions
+- handle constants π and e
+- save completed operations to history
 - handle errors
-- use functions from `functions.py`
+- use the custom `@log_action` decorator
 
-### `Calculator/functions.py`
+### `Calculator/core/data.py`
 
-This file contains mathematical functions used by the calculator.
+Stores button layouts for the calculator.
+
+It contains:
+
+- `STANDARD`
+- `SCIENTIFIC`
+- `SCIENTIFIC_SECOND`
+
+This makes the interface easier to modify without changing the main calculator logic.
+
+### `Calculator/core/decorators.py`
+
+Contains the custom decorator:
+
+```python
+def log_action(func):
+```
+
+This decorator logs when an important function is called. It is used to satisfy the custom decorator requirement.
+
+### `Calculator/core/functions.py`
+
+Contains mathematical functions used by the calculator.
 
 Examples:
 
@@ -128,39 +181,70 @@ Examples:
 - `square_root(x)`
 - `cube_root(x)`
 - `absolute(x)`
+- `ten_power(x)`
+- `two_power(x)`
 - `natural_log(x)`
 - `common_log(x)`
+- `exponent(x)`
 - `factorial_num(x)`
 - `sine(x)`
 - `cosine(x)`
 - `tangent(x)`
 - `cotangent(x)`
 
-### `Calculator/data.py`
+### `Calculator/core/validators.py`
 
-This file stores button layouts for the calculator.
+Contains regex-based validation.
 
-It contains:
+The function:
 
-- `STANDARD` buttons
-- `SCIENTIFIC` buttons
-- `SCIENTIFIC_SECOND` buttons
+```python
+def is_valid_number(value):
+```
 
-This makes it easier to change the calculator interface without editing the main logic.
+uses the `re` module to check whether the user input is a valid integer or decimal number.
 
-### `Calculator/ui.py`
+### `Calculator/storage/database.py`
 
-This file creates the graphical interface parts.
+Responsible for PostgreSQL connection and database queries.
+
+Main functions:
+
+- `get_connection()`
+- `create_table()`
+- `save_operation(expression, result)`
+- `get_history()`
+- `clear_history()`
+
+The database table is created automatically if it does not exist.
+
+### `Calculator/storage/history.py`
+
+Responsible for operation history logic.
+
+Main functions:
+
+- `add_to_history(expression, result)`
+- `load_history()`
+- `delete_history()`
+- `history_generator(records)`
+
+The `history_generator()` function returns history records one by one and satisfies the generator requirement.
+
+### `Calculator/ui/components.py`
+
+Creates the main visual components of the Tkinter interface.
 
 Main responsibilities:
 
-- create the header
-- create the display
-- create the calculator button area
+- create header
+- create display
+- create button frame
+- create menu, settings, and history buttons
 
-### `Calculator/theme.py`
+### `Calculator/ui/theme.py`
 
-This file stores color themes.
+Stores available color themes.
 
 Available themes:
 
@@ -170,311 +254,311 @@ Available themes:
 
 Each theme contains background color, button color, equal button color, and text color.
 
-### `Calculator/settings.py`
+### `Calculator/ui/settings.py`
 
-This file stores the current theme setting and includes functions for getting and changing the theme.
+Stores theme setting helper functions.
 
-### `Calculator/history.py`
+### `Calculator/tests/test_functions.py`
 
-This file is responsible for operation history logic.
+Contains unit tests for mathematical functions and regex validation. The project currently has **15 passing tests**.
 
-Main responsibilities:
+## Database Design
 
-- add operation to history
-- get saved history
-- clear history
+The project uses PostgreSQL to save operation history.
 
-It works together with `database.py`.
+Database name:
 
-### `Calculator/database.py`
+```text
+calculator_db
+```
 
-This file is prepared for database operations.
+Table name:
 
-Planned responsibilities:
+```text
+operations
+```
 
-- connect to the database
-- save calculation history
-- load saved calculations
-- clear saved history
+Table structure:
 
-At the current stage, the functions are prepared as placeholders and can be connected to PostgreSQL later.
+```sql
+CREATE TABLE IF NOT EXISTS operations (
+    id SERIAL PRIMARY KEY,
+    expression TEXT NOT NULL,
+    result TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+Example record:
+
+```text
+id | expression | result | created_at
+1  | 2+2        | 4      | 2026-05-20 12:30:00
+```
 
 ## UML-Based Design
 
-### Main Classes and Modules
+### Main Class: `Calculator`
 
-#### `Calculator`
-
-The main class of the project.
+The `Calculator` class is the main class of the application.
 
 Responsibilities:
 
-- starts and controls the calculator
-- stores the current mode
-- stores the current theme
-- loads buttons
-- reacts to user actions
-- connects UI and logic together
+- control the Tkinter window
+- store current mode
+- store current theme
+- load calculator buttons
+- open settings window
+- open history window
+- send button values to action logic
 
-#### `actions.py`
+### Supporting Modules
 
-Works as the action controller of the application.
+#### `core/actions.py`
 
-Responsibilities:
+Responsible for processing button clicks and connecting UI actions with calculator functions.
 
-- reads button values
-- updates the display
-- calls mathematical functions
-- handles calculation errors
+#### `core/functions.py`
 
-#### `functions.py`
+Responsible for mathematical calculations.
 
-Works as the mathematical service module.
+#### `storage/database.py`
 
-Responsibilities:
+Responsible for direct PostgreSQL operations.
 
-- stores reusable math functions
-- separates math logic from UI logic
-- makes the code cleaner and easier to test
+#### `storage/history.py`
 
-#### `history.py`
+Responsible for history management and generator logic.
 
-Works as the history manager module.
+#### `ui/components.py`
 
-Responsibilities:
-
-- sends history data to the database module
-- loads history from the database module
-- clears history
-
-#### `database.py`
-
-Works as the database manager module.
-
-Responsibilities:
-
-- save operations
-- load operations
-- clear operations
+Responsible for creating the visual interface.
 
 ## OOP Principles Used
 
 ### Encapsulation
 
-The `Calculator` class stores important application data inside one object, such as:
-
-- `root`
-- `mode`
-- `second_mode`
-- `theme`
-
-Methods like `load_buttons()`, `open_menu()`, and `change_theme()` control this data.
-
-### Association
-
-The `Calculator` object works together with functions from other modules:
-
-- `ui.py`
-- `actions.py`
-- `data.py`
-- `theme.py`
-
-This shows association because one part of the program uses another part to complete its work.
+The `Calculator` class stores related data and behavior together, such as mode, theme, display, buttons, and windows.
 
 ### Abstraction
 
-The user only clicks buttons. The user does not need to know how the calculation, theme changing, or UI loading works internally. The internal logic is hidden inside functions and methods.
+Complex actions such as calculation, saving history, and database connection are hidden inside functions and modules. The user only interacts with buttons.
+
+### Association
+
+The `Calculator` class works together with UI modules, action modules, and history modules. For example, the calculator calls `handle_click()`, and history functions call database functions.
 
 ### Polymorphism
 
-The calculator can work in different modes:
-
-- standard mode
-- scientific mode
-- second scientific mode
-
-The same button loading method works differently depending on the selected mode.
+The calculator can process different button values in different ways. For example, numeric buttons, arithmetic operators, scientific functions, and special buttons all use the same click flow but produce different behavior.
 
 ### Inheritance
 
-Inheritance is not strongly used in the current version. It can be added later by creating a base calculator class and child classes such as:
+The project uses Tkinter classes such as `Tk`, `Toplevel`, `Frame`, `Button`, `Entry`, and `Text`. These are object-oriented GUI components provided by the Tkinter library. The project can also be extended in the future with inherited calculator classes such as `BasicCalculator` and `ScientificCalculator`.
 
-- `StandardCalculator`
-- `ScientificCalculator`
+## Functional Programming Elements
 
-## Data Management
+The project uses functions to separate logic into reusable parts. Examples include mathematical functions in `core/functions.py`, database functions in `storage/database.py`, and validation functions in `core/validators.py`.
 
-The project includes `history.py` and `database.py` for saving operation history.
-
-Current database functions:
+The project can also use lambda expressions in button commands, for example:
 
 ```python
-def connect():
-    pass
-
-def save(expression, result):
-    pass
-
-def load():
-    return []
-
-def clear():
-    pass
+command=lambda t=text: self.click(t)
 ```
 
-These functions are prepared for future PostgreSQL integration. PostgreSQL can be used to save each expression, result, and date of calculation.
+This allows each button to send its own value to the click handler.
 
-Planned database table:
+## Decorator
+
+The project includes a custom decorator in `core/decorators.py`:
+
+```python
+@log_action
+```
+
+It logs when the button handling function is called. This satisfies the decorator requirement.
+
+## Generator
+
+The project includes a generator in `storage/history.py`:
+
+```python
+def history_generator(records):
+    for record in records:
+        yield record
+```
+
+It is used to process saved history records one by one in the history window.
+
+## Regex Validation
+
+The project includes regex validation in `core/validators.py`:
+
+```python
+pattern = r"^-?\d+(\.\d+)?$"
+```
+
+This checks whether a value is a valid number.
+
+## Unit Testing
+
+The project uses `unittest` and includes tests in:
 
 ```text
-operations
-├── id
-├── expression
-├── result
-└── created_at
+Calculator/tests/test_functions.py
 ```
 
-Although the assignment mentions CSV and JSON, this project uses a database module because PostgreSQL is a more structured and realistic way to save operation history.
+The tests check:
 
-## Functions and Functional Programming
+- square
+- cube
+- inverse
+- square root
+- cube root
+- absolute value
+- powers
+- logarithms
+- exponent
+- factorial
+- sine
+- cosine
+- regex validation
 
-The project uses many separate functions in `functions.py`. This makes the code modular and reusable.
-
-Examples:
-
-```python
-def square(x):
-    return x ** 2
-
-def sine(x):
-    return sin(radians(x))
-```
-
-Functional programming tools can also be added to satisfy the course requirements:
-
-- `lambda`
-- `map()`
-- `filter()`
-
-Example planned usage:
-
-```python
-valid_results = list(filter(lambda x: x is not None, history))
-```
-
-## Decorator, Generator, and Regex Plan
-
-To fully satisfy the project requirements, the project can include these features:
-
-### Custom Decorator
-
-A custom decorator can be used to log actions:
-
-```python
-def log_action(func):
-    def wrapper(*args, **kwargs):
-        print("Action started")
-        result = func(*args, **kwargs)
-        print("Action finished")
-        return result
-    return wrapper
-```
-
-### Generator
-
-A generator can be used to show history step by step:
-
-```python
-def history_generator(history):
-    for operation in history:
-        yield operation
-```
-
-### Regex
-
-The `re` module can be used to validate numeric input:
-
-```python
-import re
-
-def is_valid_number(value):
-    return re.match(r"^-?\d+(\.\d+)?$", value) is not None
-```
-
-## Testing Plan
-
-The project should include unit tests using `unittest`.
-
-Planned tests:
-
-- test addition
-- test subtraction
-- test multiplication
-- test division
-- test division by zero
-- test square function
-- test square root function
-
-Suggested test command:
+Run tests from the `Calculator` directory:
 
 ```bash
-python -m unittest discover tests
+python -m unittest discover -s tests -t . -p "test_*.py" -v
 ```
 
-## Installation and Running
+Expected result:
+
+```text
+Ran 15 tests
+OK
+```
+
+## Installation and Setup
 
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-link>
+git clone https://github.com/batyrkhan4/FinalProject.git
+cd FinalProject/Calculator
 ```
 
-### 2. Open the project folder
+### 2. Install dependencies
 
 ```bash
-cd FinalProject-main/Calculator
+pip install -r ../requirements.txt
 ```
 
-### 3. Run the program
+If you are already in the repository root, use:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Create PostgreSQL database
+
+Open pgAdmin or PostgreSQL terminal and run:
+
+```sql
+CREATE DATABASE calculator_db;
+```
+
+The `operations` table is created automatically when the program starts.
+
+### 4. Configure database connection
+
+Open:
+
+```text
+Calculator/storage/database.py
+```
+
+Check these values:
+
+```python
+DB_NAME = "calculator_db"
+DB_USER = "postgres"
+DB_PASSWORD = "postgres"
+DB_HOST = "localhost"
+DB_PORT = "5432"
+```
+
+If your PostgreSQL password is different, change `DB_PASSWORD`.
+
+### 5. Run the application
+
+From the `Calculator` directory:
 
 ```bash
 python main.py
+```
+
+## GitHub Workflow
+
+Before starting work:
+
+```bash
+git pull
+```
+
+After changing files:
+
+```bash
+git status
+git add .
+git commit -m "Update project"
+git push
 ```
 
 ## Team Contributions
 
 ### Bekzat Amanbek
 
-Responsible for:
-
 - calculator logic
 - mathematical functions
-- scientific calculator features
-- button actions
+- operation handling
+- scientific calculator mode
 - OOP structure
+- user interface improvements
 
 ### Batyrkhan Uvayev
 
-Responsible for:
+- modular project structure
+- PostgreSQL integration
+- operation history
+- history window
+- clear history functionality
+- decorator, generator, regex validation
+- unit tests
+- README and GitHub integration
 
-- user interface
-- theme system
-- history module
-- database module
-- testing, debugging, and integration
+## Quality Assurance
+
+The project includes:
+
+- modular package structure with `__init__.py`
+- unit tests
+- PostgreSQL persistence
+- error handling in calculation actions
+- separate responsibilities for each module
+- readable function names
+- GitHub version control
 
 ## Future Improvements
 
-- connect `database.py` to PostgreSQL
-- save every operation automatically
-- show operation history in a separate Tkinter window
-- add delete-one-operation feature
-- add unit tests folder
-- add `requirements.txt`
-- add input validation with regex
-- add decorator for logging actions
-- add generator for history display
+Possible future improvements:
+
+- add user accounts
+- add delete-one-history-record feature
+- add export history to CSV
+- improve validation before using `eval()`
+- add more unit tests for database functions
+- add more advanced scientific functions
+- hide database password using `.env` file
 
 ## Conclusion
 
-This project demonstrates Python fundamentals, modular architecture, object-oriented programming, Tkinter GUI development, mathematical operations, and teamwork. The project already has a working calculator interface and scientific functions. The history and database modules are prepared for further improvement and PostgreSQL integration.
+This project demonstrates Python fundamentals, GUI programming, modular architecture, object-oriented programming, PostgreSQL database integration, testing, decorators, generators, regex validation, and teamwork. It is a realistic calculator system that saves operation history and allows users to manage previous calculations efficiently.
