@@ -74,3 +74,13 @@ def delete_operation(operation_id):
     connection.commit()
     cursor.close()
     connection.close()
+
+def clear_history():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("DELETE FROM operations;")
+
+    connection.commit()
+    cursor.close()
+    connection.close()
